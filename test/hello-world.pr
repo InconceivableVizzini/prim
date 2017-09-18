@@ -1,0 +1,18 @@
+// This is a comment. \
+   It is a multi-line comment. \
+   \
+   \
+   arr = 2
+
+arr = 1
+
+unicöde = 1.
+π-real = 3.14159265359
+sym pi = π
+arr.each el
+  print el
+arr.each i, el
+  print i, el
+pi.each d
+  if d
+    thing 
