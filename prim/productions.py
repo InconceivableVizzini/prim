@@ -13,12 +13,15 @@ def p_block(p):
 
 def p_statements(p):
   """statements : statements NEWLINE statement
+         | statements NEWLINE
          | statement
   """
   if len(p) == 2:
-    p[0] = Node('statements', p[1])
+    p[0] = p[1]
+  elif len(p) == 4:
+    p[0] = Node('statements', p[1], p[3])
   else:
-    p[0] = Node('statements', [p[1], p[2]])
+    p[0] = p[1]
 
 def p_statement(p):
   #  """statement : assignment_statement
@@ -31,14 +34,14 @@ def p_statement(p):
          | if_statement
          | expr
   """
-  p[0] = Node('statement', p[1])
+  p[0] = p[1]
 
 def p_assignment_statement(p):
-  """assignment_statement : IDENTIFIER ASSIGN expr
-         | IDENTIFIER IDENTIFIER ASSIGN expr
+  """assignment_statement : identifier ASSIGN expr
+         | identifier identifier ASSIGN expr
   """
   if len(p) > 4:
-    p[0] = Node('assignment_statement', [p[1], p[2]], p[4])
+    p[0] = Node('assignment_statement', Node('qualified_identifier', p[1], p[2]), p[4])
   else:
     p[0] = Node('assignment_statement', p[1], p[3])
 
@@ -52,17 +55,11 @@ def p_if_statement(p):
     p[0] = Node('if_statement', p[2], p[4])
 
 def p_expr(p):
-  """expr : procedure_call
-         | equality
+  """expr : equality
          | unaop
          | binop
-         | NUMBER
-         | IDENTIFIER
-  """
-  p[0] = p[1]
-
-def p_procedure_call(p):
-  """procedure_call : END
+         | number
+         | identifier
   """
   p[0] = p[1]
 
@@ -87,3 +84,13 @@ def p_unaop(p):
           | ADD expr
   """
   p[0] = Node('unaop', p[1], p[2])
+
+def p_number(p):
+  """number : NUMBER
+  """
+  p[0] = Node('number', p[1])
+
+def p_identifier(p):
+  """identifier : IDENTIFIER
+  """
+  p[0] = Node('identifier', p[1])

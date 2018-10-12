@@ -60,9 +60,16 @@ t_RCBRA = r'}'
 t_SEMICOLON = r';'
 t_BACKSLASH = r'\\'
 
+# Transform reserved identifiers
+RESERVED = {
+  'if': 'IF',
+  'return': 'RETURN',
+  #'sym': 'SYMBOL'
+}
+
 def t_NUMBER(t):
   r"""(\d+(\.\d*)?|\.\d+)([eE][-+]? \d+)?"""
-  t.value = decimal.Decimal(t.value)
+  t.value = t.value
   return t
 
 def t_STRING(t):
@@ -96,13 +103,6 @@ def t_RPAR(t):
   r'\)'
   t.lexer.paren_count -= 1
   return t
-
-# Transform reserved identifiers
-RESERVED = {
-  'if': 'IF',
-  'return': 'RETURN',
-  #'sym': 'SYMBOL'
-}
 
 def t_IDENTIFIER(t):
   r'[\w_][_\-\.\w0-9]*'
